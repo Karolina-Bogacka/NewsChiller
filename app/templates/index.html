@@ -1,0 +1,38 @@
+<html>
+<head>
+  <title>Latest News</title>
+  <link rel="stylesheet" type="text/css" href="/static/basic.css">
+  </head>
+  <body>
+    <main>
+      <div class="navigation">
+        <h1 class="logo">News Chiller Options</h1>
+        <strong><nav>
+          <ul class="menu">
+            <li><a href="/sources">Sources</a></li>
+            <li><a href="/filters">Filters</a></li>
+          </ul>
+        </nav></strong>
+      </div>
+      <h1>Latest News</h1>
+      {% for a in articles %}
+      <a>
+        <h1>
+          <a href="/read/{{a.id}}">{{ a.title }}</a>
+        </h1>
+        <div class="source">
+          From
+          <a href="{{a.source.link}}">
+            {{a.source.title}}
+        </div>
+        <div class="added">
+          {{a.date_added}}
+        </div>
+        <div class="body">
+          {{ a.body | safe}}
+          </div>
+        </a>
+        {% endfor %}
+    </main>
+    </body>
+</html>
