@@ -2,7 +2,7 @@ from flask import abort, redirect, request, render_template
 from app import app
 from db import db
 import main_feed
-from filter import value_of_filter
+import filter
 from models.article import Article
 from models.source import Source
 
@@ -10,6 +10,7 @@ from models.source import Source
 def index():
     new_query = Article.query
     new_query = new_query.filter(Article.unread == True)
+    new_query = new_query.filter(filter.set_filter <= Article.distress)
     new_query = new_query.order_by(Article.date_added.desc())
     article_list = new_query.all()
     return render_template('index.html', articles = article_list)
@@ -44,5 +45,5 @@ def filter():
 
 @app.route("/filters", methods=["POST"])
 def test():
-    value_of_filter = request.form["filter"]
+    filter.set_filter = request.form["filter"]
     return redirect('/filters')

@@ -8,6 +8,7 @@ class Article(db.Model):
     link = db.Column(db.Text, nullable = False)
     guid = db.Column(db.String(255), nullable = False)
     unread = db.Column(db.Boolean, default = True, nullable = False)
+    distress = db.Column(db.Integer, nullable = False)
     source_id = db.Column(db.Integer, db.ForeignKey('source.id'), nullable = False)
     source = db.relationship('Source', backref = db.backref('articles', lazy = True))
     date_added = db.Column(db.DateTime, default = datetime.datetime.utcnow)
@@ -27,6 +28,7 @@ class Article(db.Model):
                 'body': position['summary'],
                 'link': position['link'],
                 'guid': position['id'],
+                'distress': filter.classify(position['title']),
                 'source_id': source_id,
                 'date_published': position['published'],
             })

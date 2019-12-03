@@ -3,6 +3,7 @@ from db import db
 from models import article, source
 import routes
 import main_feed
+import filter
 from threading import Thread
 import time
 
@@ -28,4 +29,5 @@ def update_source(src):
 thread = Thread(target=updating_loop)
 thread.start()
 
+filter.classify("yo")
 app.run()
