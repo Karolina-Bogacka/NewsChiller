@@ -10,7 +10,7 @@ from models.source import Source
 def index():
     new_query = Article.query
     new_query = new_query.filter(Article.unread == True)
-    #new_query = new_query.filter(filter.set_filter <= Article.distress)
+    new_query = new_query.filter(filter.set_filter <= Article.distress)
     new_query = new_query.order_by(Article.date_added.desc())
     article_list = new_query.all()
     return render_template('index.html', articles = article_list)
@@ -46,4 +46,6 @@ def filtered():
 @app.route("/filters", methods=["POST"])
 def test():
     filter.set_filter = request.form["filter"]
+    print("set_filter")
+    print(request.form["filter"])
     return redirect('/filters')

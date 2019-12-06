@@ -33,6 +33,4 @@ def classify(txt):
         distress = -1
     elif round(pred[0][2])==1:
         distress = 0
-    print("distressed in classify")
-    print(distress)
     distress

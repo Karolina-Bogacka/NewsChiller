@@ -22,14 +22,8 @@ class Article(db.Model):
     def insert_feed(cls, source_id, feed_articles):
         insert = Article.__table__.insert().prefix_with('IGNORE')
         article_list = []
-        print("filterinsert")
-        d = filter.classify("lol")
-        print(d)
-        print("fuuuuuuck")
         for position in feed_articles:
-            distress = filter.classify(position['title'])
-            print("distress")
-            print(distress)
+            distress = filter.classify(position['title'] + position['summary'])
             article_list.append({
                 'title': position['title'],
                 'body': position['summary'],
