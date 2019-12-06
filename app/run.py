@@ -28,7 +28,7 @@ def update_source(src):
 
 
 print("classify works")
+print(filter.classify("text"))
 thread = Thread(target=updating_loop)
 thread.start()
-app.run()
-app.config('SQLALCHEMY_TRACK_MODIFICATIONS') = False
+app.run(use_reloader=False)
