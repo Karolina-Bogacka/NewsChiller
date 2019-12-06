@@ -26,8 +26,9 @@ def update_source(src):
     articles = main_feed.articles_get(parsed)
     article.Article.insert_feed(src.id, articles)
 
+
+print("classify works")
 thread = Thread(target=updating_loop)
 thread.start()
-
-filter.classify("yo")
 app.run()
+app.config('SQLALCHEMY_TRACK_MODIFICATIONS') = False

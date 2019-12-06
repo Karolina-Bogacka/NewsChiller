@@ -1,4 +1,5 @@
 import feedparser
+import filter
 
 def source_get(parsed):
     ready_feed = parsed['feed']
