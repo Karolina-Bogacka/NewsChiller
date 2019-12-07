@@ -25,6 +25,15 @@ def get_read(article_id):
     Recently.delete_last()
     return redirect(article.link)
 
+@app.route('/article/<int:article_id>', methods=['GET'])
+def get_article(article_id):
+    article = Article.query.get(article_id)
+    article.unread = False
+    db.session.commit()
+    Recently.insert_recent(article)
+    Recently.delete_last()
+    return redirect(article.link)
+
 @app.route('/sources', methods=['GET'])
 def get_source():
     q = Source.query
@@ -72,4 +81,25 @@ def source_list():
 def recently_list():
     new_query = Recently.query
     recently_list = new_query.all()
+    return recently_list
+
+@app.route("/recently_read", methods=['POST'])
+def recently_list_post():
+    Recently.insert_recent()
+    return recently_list
+
+@app.route("/to_read", methods=['GET'])
+def toread_list():
+    new_query = ToRead.query
+    toread_list = new_query.all()
+    return toread_list
+
+@app.route("/to_read", methods=['POST'])
+def toread_list_post():
+    ToRead.insert_read(add)
+    return recently_list
+
+@app.route("/to_read", methods=['DELETE'])
+def toread_list_delete():
+    ToRead.delete_read(title)
     return recently_list
