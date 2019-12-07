@@ -23,6 +23,7 @@ def updating_loop():
 
 def update_source(src):
     parsed = main_feed.parsing_method(src.feed)
+    print(parsed)
     articles = main_feed.articles_get(parsed)
     article.Article.insert_feed(src.id, articles)
 

@@ -15,6 +15,7 @@ def parsing_method(url):
 def articles_get(parsed):
     article_list = []
     ready_entries = parsed['entries']
+    print(parsed['entries'])
     for ready in ready_entries:
         article_list.append({
         'id': ready['id'],

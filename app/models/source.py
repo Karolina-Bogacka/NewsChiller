@@ -18,3 +18,9 @@ class Source(db.Model):
         db.session.add(new_source)
         db.session.commit()
         return new_source
+
+    @classmethod
+    def delete_feed(cls, title):
+        obj = Source.query.filter_by(Source.title == title).one()
+        session.delete(obj)
+        session.commit()

@@ -5,6 +5,7 @@ import main_feed
 import filter
 from models.article import Article
 from models.source import Source
+from models.recentlyread import Recently
 
 @app.route('/', methods=['GET'])
 def index():
@@ -20,6 +21,8 @@ def get_read(article_id):
     article = Article.query.get(article_id)
     article.unread = False
     db.session.commit()
+    Recently.insert_recent(article)
+    Recently.delete_last()
     return redirect(article.link)
 
 @app.route('/sources', methods=['GET'])
@@ -49,3 +52,24 @@ def test():
     print("set_filter")
     print(request.form["filter"])
     return redirect('/filters')
+
+@app.route("/article_list", methods=['GET'])
+def article_list():
+    new_query = Article.query
+    new_query = new_query.filter(Article.unread == True)
+    new_query = new_query.filter(filter.set_filter <= Article.distress)
+    new_query = new_query.order_by(Article.date_added.desc())
+    article_list = new_query.all()
+    return article_list
+
+@app.route("/source_list", methods=['GET'])
+def source_list():
+    new_query = Source.query
+    source_list = new_query.all()
+    return source_list
+
+@app.route("/recently_read", methods=['GET'])
+def recently_list():
+    new_query = Recently.query
+    recently_list = new_query.all()
+    return recently_list
