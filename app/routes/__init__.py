@@ -6,6 +6,7 @@ import filter
 from models.article import Article
 from models.source import Source
 from models.recentlyread import Recently
+from models.toread import ToRead
 
 @app.route('/', methods=['GET'])
 def index():
