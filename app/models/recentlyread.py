@@ -10,6 +10,7 @@ class Recently(db.Model):
     link = db.Column(db.Text, nullable = False)
     guid = db.Column(db.String(255), nullable = False)
     distress = db.Column(db.Integer, default = 0, nullable = False)
+    category = db.Column(db.String(255), nullable = False)
     source_id = db.Column(db.Integer, db.ForeignKey('source.id'), nullable = False)
     source = db.relationship('Source', backref = db.backref('recently', lazy = True))
     date_added = db.Column(db.DateTime, default = datetime.datetime.utcnow)
@@ -25,6 +26,7 @@ class Recently(db.Model):
                 link = recently.link,
                 guid = recently.id,
                 distress = recently.distress,
+                category = recently.category,
                 source_id = recently.source_id,
                 date_published = recently.date_published)
         db.session.add(article)

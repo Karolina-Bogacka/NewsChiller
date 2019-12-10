@@ -25,6 +25,7 @@ class ToRead(db.Model):
                 link = add.link,
                 guid = add.id,
                 distress = add.distress,
+                category = add.category,
                 source_id = add.source_id,
                 date_published = recently.date_published)
         db.session.add(article)
