@@ -38,10 +38,9 @@ session = tf.Session(graph=tf.Graph())
 with session.graph.as_default():
     K.set_session(session)
     model = load_model('model_dir/modelstopic1.h5')
-#loaded_model._make_predict_function()
+
 global graph
 graph = tf.get_default_graph()
-#self.graph = tf.compat.v1.get_default_graph
 
 def classify(txt):
     with open('model_dir/vectorizer.pkl', 'rb') as handle:
@@ -55,8 +54,5 @@ def classify(txt):
         K.set_session(session)
         pred = model.predict(example)
     list = pred[0]
-    #maximum = np.max(list)
     prediction = np.argmax(list)
-    print("prediction")
-    print(prediction)
     return categories[prediction]

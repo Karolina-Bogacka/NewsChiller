@@ -9,7 +9,7 @@ class Recently(db.Model):
     body = db.Column(db.Text, nullable = False)
     link = db.Column(db.Text, nullable = False)
     guid = db.Column(db.String(255), nullable = False)
-    distress = db.Column(db.Integer, default = 0, nullable = False)
+    distress = db.Column(db.Integer, nullable = False)
     category = db.Column(db.String(255), nullable = False)
     source_id = db.Column(db.Integer, db.ForeignKey('source.id'), nullable = False)
     source = db.relationship('Source', backref = db.backref('recently', lazy = True))

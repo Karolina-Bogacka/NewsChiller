@@ -1,5 +1,6 @@
 from db import db
 import filter
+from filter import distress_classify
 import datetime
 import topicfilter
 
@@ -25,7 +26,8 @@ class Article(db.Model):
         insert = Article.__table__.insert().prefix_with('IGNORE')
         article_list = []
         for position in feed_articles:
-            distress = filter.classify(position['summary'])
+            print("in insert")
+            distress = filter.distress_classify(position['summary'])
             category = topicfilter.classify(position['title'] + position['summary'])
             article_list.append({
                 'title': position['title'],
@@ -37,4 +39,5 @@ class Article(db.Model):
                 'source_id': source_id,
                 'date_published': position['published'],
             })
+            print(filter.distress_classify(position['summary']))
         db.engine.execute(insert, article_list)

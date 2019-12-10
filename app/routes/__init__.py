@@ -14,6 +14,7 @@ def index():
     new_query = new_query.filter(filter.set_filter <= Article.distress)
     new_query = new_query.order_by(Article.date_added.desc())
     article_list = new_query.all()
+    print([i.distress for i in article_list])
     return render_template('index.html', articles = article_list)
 
 @app.route('/read/<int:article_id>', methods=['GET'])

@@ -47,7 +47,7 @@ def update_source(src):
 
 
 print("classify works")
-print(topicfilter.classify("text"))
+print(filter.distress_classify("text"))
 thread = Thread(target=updating_loop)
 thread.start()
 app.run(use_reloader=False)
