@@ -45,5 +45,5 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 thread = Thread(target=updating_loop)
 thread.start()
-source.Source.delete_feed("Wired")
+#source.Source.delete_feed("Wired")
 app.run(use_reloader=False)

@@ -10,6 +10,7 @@ from models.toread import ToRead
 from flask_cors import CORS, cross_origin
 
 @app.route('/', methods=['GET'])
+@cross_origin()
 def index():
     new_query = Article.query
     new_query = new_query.filter(Article.unread == True)
@@ -19,15 +20,17 @@ def index():
     return render_template('index.html', articles = article_list)
 
 @app.route('/read/<int:article_id>', methods=['GET'])
+@cross_origin()
 def get_read(article_id):
     article = Article.query.get(article_id)
     article.unread = False
     db.session.commit()
     Recently.insert_recent(article)
     Recently.delete_last()
-    return redirect(article.link)
+    return {'link':article.link}
 
 @app.route('/article/<int:article_id>', methods=['GET'])
+@cross_origin()
 def get_article(article_id):
     article = Article.query.get(article_id)
     article.unread = False
@@ -37,6 +40,7 @@ def get_article(article_id):
     return redirect(article.link)
 
 @app.route('/sources', methods=['GET'])
+@cross_origin()
 def get_source():
     q = Source.query
     q = q.order_by(Source.title)
@@ -44,11 +48,12 @@ def get_source():
     return render_template('sources.html', sources = sources)
 
 @app.route('/sources', methods=['POST'])
+@cross_origin()
 def post_source():
     if request.json:
         url = request.json['feed']
     else:
-        url = request.form['feed']}
+        url = request.form['feed']
     parsed = main_feed.parsing_method(url)
     source = main_feed.source_get(parsed)
     s = Source.insert_feed(url, source)
@@ -57,10 +62,12 @@ def post_source():
     return redirect('/sources')
 
 @app.route('/filters', methods=['GET'])
+@cross_origin()
 def filtered():
     return render_template('filters.html')
 
 @app.route("/filters", methods=["POST"])
+@cross_origin()
 def test():
     filter.set_filter = request.form["filter"]
     print("set_filter")
@@ -82,6 +89,7 @@ def article_list():
     return { 'content': article_list}
 
 @app.route("/source_list", methods=['GET'])
+@cross_origin()
 def source_list():
     new_query = Source.query
     source_list = new_query.all()
@@ -90,12 +98,14 @@ def source_list():
     return {'content': source_list}
 
 @app.route("/source_list", methods=['DELETE'])
+@cross_origin()
 def source_list_delete():
     add = request.json
     ToRead.insert_read(add['title'])
     return {"status": "OK"}
 
 @app.route("/recently_read", methods=['GET'])
+@cross_origin()
 def recently_list():
     new_query = Recently.query
     recently_list = new_query.all()
@@ -106,11 +116,13 @@ def recently_list():
     return {'content': recently_list}
 
 @app.route("/recently_read", methods=['POST'])
+@cross_origin()
 def recently_list_post():
     Recently.insert_recent()
     return recently_list
 
 @app.route("/to_read", methods=['GET'])
+@cross_origin()
 def toread_list():
     new_query = ToRead.query
     toread_list = new_query.all()
@@ -121,12 +133,14 @@ def toread_list():
     return {'content': toread_list}
 
 @app.route("/to_read", methods=['POST'])
+@cross_origin()
 def toread_list_post():
     add = request.json
     ToRead.insert_read(add)
     return {"status": "OK"}
 
 @app.route("/to_read", methods=['DELETE'])
+@cross_origin()
 def toread_list_delete():
     ToRead.delete_read(title)
     return recently_list

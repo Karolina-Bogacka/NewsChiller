@@ -24,7 +24,5 @@ class Source(db.Model):
     def delete_feed(cls, title):
         obj = Source.query.filter(Source.title == title).one()
         obj1 = Article.query.filter(Article.source_id == obj.id).delete()
-        #db.session.delete(obj1)
-        #db.session.commit()
         db.session.delete(obj)
         db.session.commit()
