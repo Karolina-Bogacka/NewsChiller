@@ -61,6 +61,16 @@ def post_source():
     Article.insert_feed(s.id, articles)
     return redirect('/sources')
 
+@app.route('/source_add', methods=['POST'])
+@cross_origin()
+def post_source2():
+    url = request.json['feed']
+    print(url)
+    parsed = main_feed.parsing_method(url)
+    source = main_feed.source_get(parsed)
+    s = Source.insert_feed(url, source)
+    return {'Status': 'OK'}
+
 @app.route('/filters', methods=['GET'])
 @cross_origin()
 def filtered():
@@ -101,7 +111,7 @@ def source_list():
 @cross_origin()
 def source_list_delete():
     add = request.json
-    ToRead.insert_read(add['title'])
+    Source.delete_feed(add['title'])
     return {"status": "OK"}
 
 @app.route("/recently_read", methods=['GET'])

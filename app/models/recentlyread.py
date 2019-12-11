@@ -35,6 +35,5 @@ class Recently(db.Model):
     def delete_last(cls):
         count = db.session.query(func.count(Recently.title)).scalar()
         if count>10:
-            obj = Recently.query.filter_by(func.min(Recently.date_added)).one()
-            session.delete(obj)
-            session.commit()
+            db.session.query(func.min(Recently.date_added)).delete()
+            db.session.commit()
