@@ -48,7 +48,7 @@ def post_source():
     if request.json:
         url = request.json['feed']
     else:
-        url = request.form['feed']}
+        url = request.form['feed']
     parsed = main_feed.parsing_method(url)
     source = main_feed.source_get(parsed)
     s = Source.insert_feed(url, source)
