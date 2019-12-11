@@ -9,7 +9,7 @@ class ToRead(db.Model):
     title = db.Column(db.Text, nullable = False)
     body = db.Column(db.Text, nullable = False)
     link = db.Column(db.Text, nullable = False)
-    guid = db.Column(db.String(255), nullable = False)
+    article_id = db.Column(db.Integer, nullable = False)
     distress = db.Column(db.Integer, default = 0, nullable = False)
     category = db.Column(db.String(255), nullable = False)
     date_added = db.Column(db.DateTime, default = datetime.datetime.utcnow)
@@ -27,7 +27,7 @@ class ToRead(db.Model):
         article = ToRead(title = object.title,
                 body = object.body,
                 link = object.link,
-                guid = object.id,
+                article_id = object.id,
                 distress = object.distress,
                 category = object.category,
                 date_published = object.date_published)

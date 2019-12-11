@@ -26,7 +26,7 @@ class Article(db.Model):
         insert = Article.__table__.insert().prefix_with('IGNORE')
         article_list = []
         for position in feed_articles:
-            distress = filter.distress_classify(position['summary'])
+            distress = filter.distress_classify(position['title'])
             category = topicfilter.classify(position['title'] + position['summary'])
             article_list.append({
                 'title': position['title'],

@@ -29,9 +29,11 @@ def distress_classify(txt):
         K.set_session(session)
         pred = loaded_model.predict(padded)
     #1 means no distress, -1 means distress
-    if round(pred[0][0])==1:
+    print(txt)
+    print(pred)
+    if pred[0][0]>0.3:
         return -1
-    elif round(pred[0][1])==1:
+    elif pred[0][1]>0.3:
         return 1
     elif round(pred[0][2])==1:
         return 0
