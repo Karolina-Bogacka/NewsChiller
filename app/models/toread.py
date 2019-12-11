@@ -2,6 +2,7 @@ from db import db
 import filter
 from sqlalchemy.sql.expression import func
 import datetime
+from models.article import Article
 
 class ToRead(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -10,24 +11,27 @@ class ToRead(db.Model):
     link = db.Column(db.Text, nullable = False)
     guid = db.Column(db.String(255), nullable = False)
     distress = db.Column(db.Integer, default = 0, nullable = False)
-    source_id = db.Column(db.Integer, db.ForeignKey('source.id'), nullable = False)
-    source = db.relationship('Source', backref = db.backref('toread', lazy = True))
+    category = db.Column(db.String(255), nullable = False)
     date_added = db.Column(db.DateTime, default = datetime.datetime.utcnow)
     date_published = db.Column(db.DateTime)
-    __table_args__ = (
-        db.UniqueConstraint('source_id', 'guid', name='uc_source_guid'),
-    )
 
     @classmethod
     def insert_read(cls, add):
-        article = ToRead(title = add.title,
-                body = add.body,
-                link = add.link,
-                guid = add.id,
-                distress = add.distress,
-                category = add.category,
-                source_id = add.source_id,
-                date_published = recently.date_published)
+        article_query = Article.query
+        article_query = article_query.filter(Article.id == add['id'])
+        object = article_query.all()
+        for i in object:
+            print(i.title)
+        print(add)
+        object = object[-1]
+        article = ToRead(title = object.title,
+                body = object.body,
+                link = object.link,
+                guid = object.id,
+                distress = object.distress,
+                category = object.category,
+                date_published = object.date_published)
+        print(article.title)
         db.session.add(article)
         db.session.commit()
 

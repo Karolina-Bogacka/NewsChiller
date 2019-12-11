@@ -8,6 +8,7 @@ import re
 from nltk import word_tokenize
 import topicfilter
 from threading import Thread
+from flask_cors import CORS, cross_origin
 import time
 import string
 
@@ -15,12 +16,6 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 stop_words_ = set(stopwords.words('english'))
 wn = WordNetLemmatizer()
-
-import nltk
-nltk.download('punkt')
-nltk.download('stopwords')
-nltk.download('wordnet')
-nltk.download('averaged_perceptron_tagger')
 
 my_sw = ['make', 'amp',  'news','new' ,'time', 'u','s', 'photos',  'get', 'say']
 def black_txt(token):
@@ -45,9 +40,10 @@ def update_source(src):
     articles = main_feed.articles_get(parsed)
     article.Article.insert_feed(src.id, articles)
 
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
-print("classify works")
-print(filter.distress_classify("text"))
 thread = Thread(target=updating_loop)
 thread.start()
+source.Source.delete_feed("Wired")
 app.run(use_reloader=False)

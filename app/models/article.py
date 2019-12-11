@@ -14,7 +14,7 @@ class Article(db.Model):
     distress = db.Column(db.Integer, nullable = False)
     category = db.Column(db.String(255), nullable = False)
     source_id = db.Column(db.Integer, db.ForeignKey('source.id'), nullable = False)
-    source = db.relationship('Source', backref = db.backref('articles', lazy = True))
+    source = db.relationship('Source', backref = db.backref('articles', lazy = True), single_parent=True, cascade="all, delete-orphan")
     date_added = db.Column(db.DateTime, default = datetime.datetime.utcnow)
     date_published = db.Column(db.DateTime)
     __table_args__ = (
@@ -26,7 +26,6 @@ class Article(db.Model):
         insert = Article.__table__.insert().prefix_with('IGNORE')
         article_list = []
         for position in feed_articles:
-            print("in insert")
             distress = filter.distress_classify(position['summary'])
             category = topicfilter.classify(position['title'] + position['summary'])
             article_list.append({
@@ -39,5 +38,4 @@ class Article(db.Model):
                 'source_id': source_id,
                 'date_published': position['published'],
             })
-            print(filter.distress_classify(position['summary']))
         db.engine.execute(insert, article_list)

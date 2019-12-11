@@ -7,6 +7,7 @@ from models.article import Article
 from models.source import Source
 from models.recentlyread import Recently
 from models.toread import ToRead
+from flask_cors import CORS, cross_origin
 
 @app.route('/', methods=['GET'])
 def index():
@@ -15,7 +16,6 @@ def index():
     new_query = new_query.filter(filter.set_filter <= Article.distress)
     new_query = new_query.order_by(Article.date_added.desc())
     article_list = new_query.all()
-    print([i.distress for i in article_list])
     return render_template('index.html', articles = article_list)
 
 @app.route('/read/<int:article_id>', methods=['GET'])
@@ -45,7 +45,10 @@ def get_source():
 
 @app.route('/sources', methods=['POST'])
 def post_source():
-    url = request.form['feed']
+    if request.json:
+        url = request.json['feed']
+    else:
+        url = request.form['feed']}
     parsed = main_feed.parsing_method(url)
     source = main_feed.source_get(parsed)
     s = Source.insert_feed(url, source)
@@ -65,25 +68,42 @@ def test():
     return redirect('/filters')
 
 @app.route("/article_list", methods=['GET'])
+@cross_origin()
 def article_list():
     new_query = Article.query
     new_query = new_query.filter(Article.unread == True)
     new_query = new_query.filter(filter.set_filter <= Article.distress)
     new_query = new_query.order_by(Article.date_added.desc())
     article_list = new_query.all()
-    return article_list
+    article_list = [{'distress': i.distress, 'id': i.id,
+    'category': i.category, 'title': i.title, 'body': i.body,
+    'link': i.link, 'source': i.source.title,
+    'date_added': str(i.date_added)}for i in article_list]
+    return { 'content': article_list}
 
 @app.route("/source_list", methods=['GET'])
 def source_list():
     new_query = Source.query
     source_list = new_query.all()
-    return source_list
+    source_list = [{'id': i.id,'title': i.title, 'subtitle': i.subtitle,
+    'link': i.link, 'date_added': str(i.date_added)}for i in source_list]
+    return {'content': source_list}
+
+@app.route("/source_list", methods=['DELETE'])
+def source_list_delete():
+    add = request.json
+    ToRead.insert_read(add['title'])
+    return {"status": "OK"}
 
 @app.route("/recently_read", methods=['GET'])
 def recently_list():
     new_query = Recently.query
     recently_list = new_query.all()
-    return recently_list
+    recently_list = [{'distress': i.distress, 'id': i.id,
+    'category': i.category, 'title': i.title, 'body': i.body,
+    'link': i.link,
+    'date_added': str(i.date_added)}for i in recently_list]
+    return {'content': recently_list}
 
 @app.route("/recently_read", methods=['POST'])
 def recently_list_post():
@@ -94,12 +114,17 @@ def recently_list_post():
 def toread_list():
     new_query = ToRead.query
     toread_list = new_query.all()
-    return toread_list
+    toread_list = [{'distress': i.distress, 'id': i.id,
+    'category': i.category, 'title': i.title, 'body': i.body,
+    'link': i.link,
+    'date_added': str(i.date_added)}for i in toread_list]
+    return {'content': toread_list}
 
 @app.route("/to_read", methods=['POST'])
 def toread_list_post():
+    add = request.json
     ToRead.insert_read(add)
-    return recently_list
+    return {"status": "OK"}
 
 @app.route("/to_read", methods=['DELETE'])
 def toread_list_delete():

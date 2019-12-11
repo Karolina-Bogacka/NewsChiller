@@ -11,13 +11,13 @@ class Recently(db.Model):
     guid = db.Column(db.String(255), nullable = False)
     distress = db.Column(db.Integer, nullable = False)
     category = db.Column(db.String(255), nullable = False)
-    source_id = db.Column(db.Integer, db.ForeignKey('source.id'), nullable = False)
-    source = db.relationship('Source', backref = db.backref('recently', lazy = True))
+    #source_id = db.Column(db.Integer, db.ForeignKey('source.id'), nullable = False)
+    #source = db.relationship('Source', backref = db.backref('recently', lazy = True))
     date_added = db.Column(db.DateTime, default = datetime.datetime.utcnow)
     date_published = db.Column(db.DateTime)
-    __table_args__ = (
-        db.UniqueConstraint('source_id', 'guid', name='uc_source_guid'),
-    )
+    #__table_args__ = (
+    #    db.UniqueConstraint('source_id', 'guid', name='uc_source_guid'),
+    #)
 
     @classmethod
     def insert_recent(cls, recently):
@@ -27,15 +27,13 @@ class Recently(db.Model):
                 guid = recently.id,
                 distress = recently.distress,
                 category = recently.category,
-                source_id = recently.source_id,
                 date_published = recently.date_published)
         db.session.add(article)
         db.session.commit()
 
     @classmethod
     def delete_last(cls):
-        new_query = Recently.query(Recently.id)
-        count = new_query.count()
+        count = db.session.query(func.count(Recently.title)).scalar()
         if count>10:
             obj = Recently.query.filter_by(func.min(Recently.date_added)).one()
             session.delete(obj)

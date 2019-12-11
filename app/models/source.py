@@ -1,5 +1,6 @@
 from db import db
 import datetime
+from models.article import Article
 
 class Source(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -21,6 +22,9 @@ class Source(db.Model):
 
     @classmethod
     def delete_feed(cls, title):
-        obj = Source.query.filter_by(Source.title == title).one()
-        session.delete(obj)
-        session.commit()
+        obj = Source.query.filter(Source.title == title).one()
+        obj1 = Article.query.filter(Article.source_id == obj.id).delete()
+        #db.session.delete(obj1)
+        #db.session.commit()
+        db.session.delete(obj)
+        db.session.commit()
