@@ -14,7 +14,9 @@ class Source(db.Model):
         link = source['link']
         title = source['title']
         subtitle = source['subtitle']
-        new_source = Source(feed=feed, link=link, title=title, subtitle=subtitle)
-        db.session.add(new_source)
-        db.session.commit()
+        new_source = None
+        if Source.query.filter(Source.link==source['link']) :
+            new_source = Source(feed=feed, link=link, title=title, subtitle=subtitle)
+            db.session.add(new_source)
+            db.session.commit()
         return new_source

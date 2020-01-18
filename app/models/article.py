@@ -1,5 +1,9 @@
 from db import db
-import filter
+import filter_dir.filter
+from filter_dir.filter import classify
+import filter_dir.filter_bert
+from filter_dir.filter_bert import classify_bert
+import filter_dir.binary_filter
 import datetime
 
 class Article(db.Model):
@@ -10,6 +14,9 @@ class Article(db.Model):
     guid = db.Column(db.String(255), nullable = False)
     unread = db.Column(db.Boolean, default = True, nullable = False)
     distress = db.Column(db.Integer, default = 0, nullable = False)
+    img_link = db.Column(db.Text, nullable = True)
+    img_credit = db.Column(db.Text, nullable = True)
+    tags = db.Column(db.Text, nullable = True)
     source_id = db.Column(db.Integer, db.ForeignKey('source.id'), nullable = False)
     source = db.relationship('Source', backref = db.backref('articles', lazy = True))
     date_added = db.Column(db.DateTime, default = datetime.datetime.utcnow)
@@ -23,14 +30,17 @@ class Article(db.Model):
         insert = Article.__table__.insert().prefix_with('IGNORE')
         article_list = []
         for position in feed_articles:
-            distress = filter.classify(position['title'] + position['summary'])
+            distress = filter_dir.binary_filter.classify_bert([position['title']])
             article_list.append({
                 'title': position['title'],
                 'body': position['summary'],
                 'link': position['link'],
                 'guid': position['id'],
-                'distress': distress,
+                'distress': int(distress),
                 'source_id': source_id,
                 'date_published': position['published'],
+                'img_link': position['img_link'],
+                'img_credit': position['img_credit'],
+                'tags': position['tags']
             })
         db.engine.execute(insert, article_list)

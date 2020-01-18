@@ -3,7 +3,6 @@ from db import db
 from models import article, source
 import routes
 import main_feed
-import filter
 from threading import Thread
 import time
 
@@ -26,9 +25,6 @@ def update_source(src):
     articles = main_feed.articles_get(parsed)
     article.Article.insert_feed(src.id, articles)
 
-
-print("classify works")
-print(filter.classify("text"))
 thread = Thread(target=updating_loop)
 thread.start()
-app.run(use_reloader=False)
+app.run(debug = True, use_debugger = True, use_reloader=False)

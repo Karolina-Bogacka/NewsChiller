@@ -1,39 +1,153 @@
 <html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
-  <title>Latest News</title>
+  <title>𝕔𝕙𝕚𝕝𝕝 𝕟𝕖𝕨𝕤</title>
   <link rel="stylesheet" type="text/css" href="/static/basic.css">
   </head>
   <body>
     <main>
+      <div class="container-class">
       <div class="navigation">
-        <h1 class="logo">News Chiller Options</h1>
-        <strong><nav>
+        <h1 class="logo">𝕔𝕙𝕚𝕝𝕝 𝕟𝕖𝕨𝕤</h1>
+        <nav>
           <ul class="menu">
-            <li><a href="/sources">Sources</a></li>
-            <li><a href="/filters">Filters</a></li>
+            <li><button onclick="myFunction('about'); disableLink()">𝕒𝕓𝕠𝕦𝕥</button></li>
+            <div id="about" class="myDIV">
+            The idea for this project came to me last summer, during my first programming internship.
+            I had a huge case of impostor syndrome - and a bunch of other difficult issues going on in my life.
+            Still, I wanted to stay on top of what's going on in the world - I mean, I'd been an aspiring
+            journalist myself, and so I perceived it as my personal responsibility.
+            So every day, I would leave my house an hour before the standup and use my commute to check on the news.
+            But every day, the general chaos of 2019 would turn out to be too much, and I would enter the meeting
+            with sweaty hands and a general sense of hopelessness.
+            Finally, I decided to skip the news in the morning - which implicitly also meant skipping the news in
+            the evening, since there was just too much going on - which quickly morphed into skipping the news
+            altogether.
+            It made much more relaxed, and happy, and ready to do my job. But also much more ignorant and isolated
+            from the world.
+
+            This website is not meant to be used as a way to tune out reality. It's a tool for people like me,
+            who may not be able to engage with it directly for some time, and who would probably have to resort
+            to news avoidance as a result. It aggregates some of the most popular news feeds and filter them out
+            by their level of distress. Full details are available here:
+            <a href='' id="navLink">NewsChiller on Github</a>
+            </div>
+            <li><button onclick="myFunction('sources')">𝕤𝕠𝕦𝕣𝕔𝕖𝕤</button></li>
+            <div id="sources" class="myDIV">
+                {% for s in sources %}
+                <div>
+                  <a href = "{{s.link}}">{{s.title}}</a>
+                  </div>
+                {% endfor %}
+                <form method="POST">
+                  <input name="feed" class="bar" placeholder="Paste the feed url"/>
+                  <input type="submit" class="searchButton" name="form" value="Add feed"></input>
+                  </form>
+            </div>
+            <li><button onclick="myFunction('filters')">𝕗𝕚𝕝𝕥𝕖𝕣𝕤</button></li>
+            <div id="filters" class="myDIV">
+              <div class="slidecontainer">
+                <form method="POST">
+                <h1> Filter</h1>
+                <!--0
+            <input type="range" min="-1" max="1" value="0" step="1" class="slider" name="filter">
+          Max-->
+          ON<input type="range" min="0" max="1" value="1" step="1" class="slider" name="filter">OFF
+          <input type="submit" name="form" style = "float:center;"value="Set filter"/>
+                </form>
+          </div></div>
+            <li><button onclick="myFunction('questionnaire')">𝕢𝕦𝕖𝕤𝕥𝕚𝕠𝕟𝕟𝕒𝕚𝕣𝕖</button></li>
+            <div id="questionnaire" class="myDIV">
+            <form method="post">
+            <p>As the sole developer behind this project (and an undergraduate,
+            hoping to quickly change that status) I would kindly ask you to answer
+            the following questions about the project:</p>
+            <p>Has the aggregator managed to filter out negative headlines?</p>
+            <input checked="checked" name="answer1" type="radio" value="{{true}}" /> True
+            <input name="answer1" type="radio" value="{{false}}" /> False
+            <p>Has the interface been both understandable and nondistracting enough?</p>
+            <input checked="checked" name="answer2" type="radio" value="{{true}}" /> True
+            <input name="answer2" type="radio" value="{{false}}" /> False
+            <p>Has the aggregator had a positive impact on your reading experience?</p>
+            <input checked="checked" name="answer3" type="radio" value="{{true}}" /> True
+            <input name="answer3" type="radio" value="{{false}}" /> False
+            <p>If you have any specific comments/suggestions, please write them below.</p>
+            <input name="comment" type="text" class="bar"/>
+            <!--<input type="submit" name="form" class="searchButton" value="Submit" onclick="myFunctionEmpty()"></input>-->
+            <input type="submit" name="form" class="searchButton" value="Submit"/>
+            </form>
+          </div>
+          <form class="searchForm" method="post">
+                <input type="text" class="bar" placeholder="Search in text or tags" name="search">
+                <input type="submit" class="searchButton" name="form" value="Search"><!--&#128269;--></input>
+            </form>
           </ul>
-        </nav></strong>
+          <script>
+          function myFunction(y='myDIV') {
+            var x = document.getElementById(y);
+            if (x.style.display === 'none') {
+              x.style.display = 'block';
+            } else {
+              x.style.display = 'none';
+            }
+          }
+
+          function disableLink(y='navLink') {
+            var x = document.getElementById(y);
+            if (document.getElementById('about').style.display === 'block') {
+              x.href = 'https://github.com/Karola766/NewsChiller';
+            } else {
+              x.href = '';
+            }
+          }
+
+          function myFunctionEmpty(y='questionnaire') {
+            var x = document.getElementById(y);
+            x.innerHTML = "Thanks a lot!"
+          }
+        </script>
+        </nav>
       </div>
-      <h1>Latest News</h1>
-      {% for a in articles %}
+      <div class="articles">
+      <!--<h1>Chill News</h1>-->
+      {% for art in articles %}
+      <div class="headline">
       <a>
+        <div class="title">
         <h1>
-          <a href="/read/{{a.id}}">{{ a.title }}</a>
+          <a href="/read/{{art.id}}">{{ art.title }}</a>
         </h1>
+      </div>
+        <div class="single">
+          <div class="img">
+            {% if art.img_link is not none %}
+            <a class="image"><img src={{art.img_link}} alt={{art.img_credit}}></a>
+            {%else%}
+            <a class="image"/>
+            {% endif %}
+          </div>
+          <div class="right">
         <div class="source">
-          From
-          <a href="{{a.source.link}}">
-            {{a.source.title}}
+          <a href="{{art.source.link}}">
+            From {{art.source.title}}</a>
         </div>
-        {{a.distress}}
         <div class="added">
-          {{a.date_added}}
+          {{art.date_added}}
+          {{art.distress}}
         </div>
         <div class="body">
-          {{ a.body | safe}}
+          {{ art.body | safe}}
           </div>
-        </a>
+          <div class="tags">
+            {{art.tags}}
+          </div>
+        </div>
+      </div>
+      </div>
         {% endfor %}
+      No more articles here, sorry ;)
+      </div>
+    </div>
     </main>
     </body>
 </html>

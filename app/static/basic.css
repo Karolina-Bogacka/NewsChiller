@@ -1,23 +1,137 @@
-* {
-  margin: 0;
-  padding: 0;
+*{
+    text-decoration: none;
+    color: rgb(100, 101, 192);
+    text-size-adjust: auto;
 }
 
-li a {
+.navLink{
+  font-weight: bold;
+}
+
+.space{
+  height: 2em;
+}
+ul {
+    padding: 0;
+}
+
+li button {
   display: block;
-  width: 60px;
+  width: 100%;
+  background-color: rgb(234, 187, 219);
+  color: rgb(100, 101, 192);
+  text-decoration: none;
+  border: 0;
+  margin-left: 0px;
+  box-shadow: none;
+  border-radius: 0px;
+}
+
+.image{
+  /*width: 40%;*/
+  float: left;
+  padding: 2em;
+}
+
+.single{
+  background-color: rgb(234, 187, 219);
+  display: block;
+  width: 100%;
+  float: left;
+}
+
+.title{
+  display: block;
+  width: 100%;
+  font-weight: lighter;
+}
+
+.headline {
+  margin-bottom: 1em;
+}
+
+art {
+  font-size: 14px;
+  padding: 2em;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  color: rgb(100, 101, 192);
+  background-color: rgb(234, 187, 219);
+  display: block;
+  width: 100%;
+}
+
+.navigation > h1 {
+  background-color: rgb(234, 187, 219);
+  display: block;
+  text-align: center;
+  width: 100%;
+}
+
+.myDIV{
+  display: none;
+  background-color: rgb(234, 187, 219);
+  width: 100%;
+  font-weight: lighter;
+  margin: 0em;
+  font-size: 15px;
+}
+
+.tags{
+  font-weight: bold;
+  padding: 1em;
+}
+
+.articles {
+  float: right;
+  width: 70%;
+  display: block;
+  text-align: left;
+  background-color: rgb(254, 196, 183);
+  height: 100%;
+  overflow-y: auto;
+  padding-left:2em;
+  padding-right: 2em;
+  padding-bottom: 2em;
+}
+
+.searchForm{
+  width: 100%;
+  float: center;
+}
+
+.bar{
+  width: 72%;
+}
+
+.searchButton{
+  width: 25%;
 }
 
 .navigation {
   display: block;
-  width: 60px;
+  float: left;
+  width: 20%;
+  background-color: rgb(254, 196, 183);
   text-align: left;
+  overflow: hidden;
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-bottom: 1em;
+}
+
+.body{
+  display:block;
+  padding-left: 2em;
+  padding-right: 2em;
 }
 
 body {
-  color: rgb(255, 153, 102);
-  background: #f1f1f1;
-  font-family: Helvetica, Georgia, sans-serif;
+  color: rgb(100, 101, 192);
+  font-family: Tahoma, Geneva, sans-serif;
+  background-image: url("background/clouds.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 
 main {
@@ -25,41 +139,45 @@ main {
   padding: 0.5em;
   margin: 0 auto;
   width: 100%;
-  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 main > h1 {
   font-size: 20px;
-  margin: 0.5em 0;
 }
 
-article {
-  font-size: 14px;
-  padding:0.5 em;
-  background: #fff;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+.added {
+  font-weight: bold;
+}
+.source{
+  font-weight: bold;
+  padding: 1em;
 }
 
-article + article {
-  margin-top: 2em;
-}
 
-article > h1 {
-  font-size: 18px;
-}
-
-article > h1 >a {
-  color: inherit;
-  text-decoration: none;
-}
-
-article > .added {
-  margin-top: 0.25em;
-  color: #777;
-}
-
-article > .body {
-  margin-top: 0.5em;
-  line-height: 1.2em;
-
+@media screen and (max-width: 980px){
+  .navigation{
+    float: center;
+    width: 90%;
+    padding: 1em;
+    margin: 2em;
+    box-sizing: border-box;
+    position: absolute;
+    overflow-y: auto;
+    top: 0;
+  }
+  .articles{
+    float: center;
+    width: 90%;
+    padding: 1em;
+    margin: 2em;
+    box-sizing: border-box;
+    position: absolute;
+    top: 40%;
+  }
+  .myDIV{
+    margin: 1em;
+  }
 }
