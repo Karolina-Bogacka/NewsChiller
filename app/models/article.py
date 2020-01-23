@@ -44,3 +44,7 @@ class Article(db.Model):
                 'tags': position['tags']
             })
         db.engine.execute(insert, article_list)
+        count = db.session.query(func.count(Article.title)).scalar()
+        if count>100:
+            db.session.query(func.min(Article.date_added)).delete()
+            db.session.commit()

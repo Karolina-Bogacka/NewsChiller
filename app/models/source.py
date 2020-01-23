@@ -19,4 +19,8 @@ class Source(db.Model):
             new_source = Source(feed=feed, link=link, title=title, subtitle=subtitle)
             db.session.add(new_source)
             db.session.commit()
+        count = db.session.query(func.count(Source.title)).scalar()
+        if count>10:
+            db.session.query(func.min(Source.date_added)).delete()
+            db.session.commit()
         return new_source
