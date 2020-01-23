@@ -5,6 +5,7 @@ import filter_dir.filter_bert
 from filter_dir.filter_bert import classify_bert
 import filter_dir.binary_filter
 import datetime
+from sqlalchemy.sql.expression import func
 
 class Article(db.Model):
     id = db.Column(db.Integer, primary_key = True)

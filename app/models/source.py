@@ -1,5 +1,6 @@
 from db import db
 import datetime
+from sqlalchemy.sql.expression import func
 
 class Source(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -15,7 +16,7 @@ class Source(db.Model):
         title = source['title']
         subtitle = source['subtitle']
         new_source = None
-        if Source.query.filter(Source.link==source['link']) :
+        if Source.query.filter(Source.feed==feed).count()<1:
             new_source = Source(feed=feed, link=link, title=title, subtitle=subtitle)
             db.session.add(new_source)
             db.session.commit()

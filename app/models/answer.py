@@ -10,7 +10,6 @@ class Answer(db.Model):
 
     @classmethod
     def insert_answer(cls, answer1, answer2, answer3, comment):
-        print("in answer")
         new_answer = Answer(answer1=bool(answer1), answer2=bool(answer2), answer3=bool(answer3), comment=comment)
         db.session.add(new_answer)
         db.session.commit()

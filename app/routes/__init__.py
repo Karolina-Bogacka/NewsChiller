@@ -36,7 +36,6 @@ def index():
 def post_index():
     print("post")
     if request.form['form'] == 'Add feed':
-        print("feed")
         url = request.form['feed']
         parsed = main_feed.parsing_method(url)
         source = main_feed.source_get(parsed)
@@ -47,15 +46,12 @@ def post_index():
         return redirect('/')
     elif request.form['form'] == 'Set filter':
         filter_dir.filter.set_filter = request.form["filter"]
-        print(filter_dir.filter.set_filter)
         return redirect('/')
     elif request.form['form'] == 'Submit':
-        print("answer")
         Answer.insert_answer(request.form['answer1'],
         request.form['answer2'], request.form['answer3'], request.form['comment'])
         return redirect('/')
     elif request.form['form'] == 'Search':
-        print(request.form['search'])
         article_list, sources = search(request.form['search'])
         return render_template('index.html', articles = article_list, sources = sources)
     else:
