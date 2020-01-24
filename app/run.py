@@ -27,4 +27,4 @@ def update_source(src):
 
 thread = Thread(target=updating_loop)
 thread.start()
-app.run(debug = True, use_debugger = True, use_reloader=False)
+app.run()

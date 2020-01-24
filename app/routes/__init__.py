@@ -34,7 +34,6 @@ def index():
 
 @app.route('/', methods=['POST'])
 def post_index():
-    print("post")
     if request.form['form'] == 'Add feed':
         url = request.form['feed']
         parsed = main_feed.parsing_method(url)
@@ -64,31 +63,3 @@ def get_read(article_id):
     article.unread = False
     db.session.commit()
     return redirect(article.link)
-
-@app.route('/sources', methods=['GET'])
-def get_source():
-    q = Source.query
-    q = q.order_by(Source.title)
-    sources = q.all()
-    return render_template('sources.html', sources = sources)
-
-@app.route('/sources', methods=['POST'])
-def post_source():
-    url = request.form['feed']
-    parsed = main_feed.parsing_method(url)
-    source = main_feed.source_get(parsed)
-    s = Source.insert_feed(url, source)
-    if s:
-        articles = main_feed.articles_get(parsed)
-        Article.insert_feed(s.id, articles)
-    return redirect('/sources')
-
-@app.route('/filters', methods=['GET'])
-def filtered():
-    return render_template('filters.html')
-
-@app.route("/filters", methods=["POST"])
-def test():
-    filter_dir.filter.set_filter = request.form["filter"]
-    print(filter_dir.filter.set_filter)
-    return redirect('/filters')
