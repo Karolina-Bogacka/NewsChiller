@@ -36,12 +36,15 @@ def index():
 def post_index():
     if request.form['form'] == 'Add feed':
         url = request.form['feed']
-        parsed = main_feed.parsing_method(url)
-        source = main_feed.source_get(parsed)
-        s = Source.insert_feed(url, source)
-        if s:
-            articles = main_feed.articles_get(parsed)
-            Article.insert_feed(s.id, articles)
+        try:
+            parsed = main_feed.parsing_method(url)
+            source = main_feed.source_get(parsed)
+            s = Source.insert_feed(url, source)
+            if s:
+                articles = main_feed.articles_get(parsed)
+                Article.insert_feed(s.id, articles)
+        except:
+            pass
         return redirect('/')
     elif request.form['form'] == 'Set filter':
         filter_dir.filter.set_filter = request.form["filter"]

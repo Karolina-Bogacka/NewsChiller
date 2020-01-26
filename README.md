@@ -21,3 +21,22 @@ The classifier used in the app is a RoBERTa based binary classifier from simplet
 ###FILL OUT THE QUESTIONNAIRE (PLEASE)
 
 ![](gifs/questionnaire.gif)
+
+## Backstory:
+
+The idea for this project came to me last summer, during my first programming internship.
+I had a huge case of impostor syndrome - and a bunch of other issues going on in my life.
+Still, I wanted to stay on top of what's going on in the world - I mean, I'd been an aspiring
+journalist myself, and so I perceived it as my personal responsibility.
+So every day, I would leave my house an hour before the standup and use my commute to check on the news.
+But every day, the general chaos of 2019 would turn out to be too much, and I would enter the meeting
+with sweaty hands and a general sense of hopelessness.
+Finally, I decided to skip the news in the morning - which implicitly also meant skipping the news in
+the evening, since there was just too much going on - which quickly morphed into skipping the news
+altogether.
+It made much more relaxed, and happy, and ready to do my job. But also much more ignorant and isolated
+from the world.
+
+This website is not meant to be used as a way to tune out reality. It's a tool for people like me,
+who may not be able to engage with it directly for some time, and who would probably have to resort
+to news avoidance as a result.
