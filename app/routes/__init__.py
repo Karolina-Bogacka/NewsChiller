@@ -1,8 +1,8 @@
 from flask import abort, redirect, request, render_template
 from app import app
 from db import db
+import filter_dir
 import main_feed
-import filter_dir.filter
 from sqlalchemy import or_
 from models.article import Article
 from models.answer import Answer
@@ -12,7 +12,7 @@ def search(text):
     new_query = Article.query
     new_query = new_query.filter(or_(Article.title.contains(text), Article.body.contains(text), Article.tags.contains(text)))
     new_query = new_query.filter(Article.unread == True)
-    new_query = new_query.filter(filter_dir.filter.set_filter >= Article.distress)
+    new_query = new_query.filter(filter_dir.set_filter >= Article.distress)
     new_query = new_query.order_by(Article.date_added.desc())
     article_list = new_query.all()
     q = Source.query
@@ -24,13 +24,13 @@ def search(text):
 def index():
     new_query = Article.query
     new_query = new_query.filter(Article.unread == True)
-    new_query = new_query.filter(filter_dir.filter.set_filter >= Article.distress)
+    new_query = new_query.filter(filter_dir.set_filter >= Article.distress)
     new_query = new_query.order_by(Article.date_added.desc())
     article_list = new_query.all()
     q = Source.query
     q = q.order_by(Source.title)
     sources = q.all()
-    return render_template('index.html', articles = article_list, sources = sources)
+    return render_template('index.html', articles = article_list, sources = sources, set_filter = filter_dir.set_filter)
 
 @app.route('/', methods=['POST'])
 def post_index():
@@ -47,7 +47,7 @@ def post_index():
             pass
         return redirect('/')
     elif request.form['form'] == 'Set filter':
-        filter_dir.filter.set_filter = request.form["filter"]
+        filter_dir.set_filter = request.form["filter"]
         return redirect('/')
     elif request.form['form'] == 'Submit':
         Answer.insert_answer(request.form['answer1'],
@@ -55,14 +55,17 @@ def post_index():
         return redirect('/')
     elif request.form['form'] == 'Search':
         article_list, sources = search(request.form['search'])
-        return render_template('index.html', articles = article_list, sources = sources)
+        return render_template('index.html', articles = article_list, sources = sources, set_filter = filter_dir.set_filter)
     else:
         return redirect('/')
 
 
 @app.route('/read/<int:article_id>', methods=['GET'])
 def get_read(article_id):
-    article = Article.query.get(article_id)
-    article.unread = False
-    db.session.commit()
-    return redirect(article.link)
+    try:
+        article = Article.query.get(article_id)
+        article.unread = False
+        db.session.commit()
+        return redirect(article.link)
+    except:
+        return redirect('/')

@@ -10,7 +10,6 @@ from tensorflow.python.keras.backend import set_session
 global session
 session = tf.Session(graph=tf.Graph())
 
-set_filter = 0
 with session.graph.as_default():
     K.set_session(session)
     loaded_model = load_model('filter_dir/model_dir/models819.h5')

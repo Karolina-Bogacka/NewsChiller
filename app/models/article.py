@@ -47,5 +47,5 @@ class Article(db.Model):
         db.engine.execute(insert, article_list)
         count = db.session.query(func.count(Article.title)).scalar()
         if count>100:
-            db.session.query(func.min(Article.date_added)).delete()
+            db.session.query(func.min(Article.date_added)).one().delete()
             db.session.commit()
