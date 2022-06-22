@@ -43,7 +43,7 @@ nbformat==4.4.0
 notebook==5.7.8
 nsgt==0.17
 numba==0.43.1
-numpy==1.16.2
+numpy==1.22.0
 panda3d==1.10.0.dev2097+deployng.280
 pandocfilters==1.4.2
 pexpect==4.7.0
